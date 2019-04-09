@@ -2,46 +2,52 @@ import mpmath
 from sympy import *	
 x, y, z, t = symbols("x y z t")
 
-menuLoop = True
-
-def debug(method, y0, t0, h, expression):
-	print("metodo =" + method + "\ny0 = " + str(y0) + "\nt0 = " + str(t0) + "\nh = " + str(h) + "\nexpression = " + str(expression))
-
 class methods:
-	def euler(): # Pronto
-		y0 = float(input("Insira o valor de y0: "))
-		t0 = float(input("Insira o valor de t0: "))
-		h = float(input("Insira o valor de h: "))
-		steps = int(input("Insira o numero de passos: "))
+	def euler(entrie): # Pronto
+		y0 = float(entrie[1])
+		t0 = float(entrie[2])
+		h = float(entrie[3])
+		steps = int(entrie[4])
 
-		stringExpression = input("Insira a expressao: ")
+		stringExpression = entrie[5]
 		expression = sympify(stringExpression)
+
+		output = open('saida.txt', 'a')
+		output.write("Metodo de Euler\n")
+		output.write("y( 0.0 ) = " + str(y0) + "\n")
+		output.write("h = " + str(h) + "\n")
 
 		Y = y0
 		T = t0
 
-		print("0 " + str(y0))
 		for i in range(1, (steps + 1)):
+			# Yn+1 = Yn + h*fn
 			F = h*expression.subs([(t, T), (y, Y)]) # Substituir o y da equacao pela variavel Y ( Assim para o t e T )
 
 			Y += F
 			T += h
 
-			print(str(i), Y)
+			output.write(str(i) + " " + str(Y) + "\n")
+		output.write("\n")
+		output.close()
 
-	def eulerInverse(): # Pronto
-		y0 = float(input("Insira o valor de y0: "))
-		t0 = float(input("Insira o valor de t0: "))
-		h = float(input("Insira o valor de h: "))
-		steps = int(input("Insira o numero de passos: "))
+	def eulerInverse(entrie): # Pronto
+		y0 = float(entrie[1])
+		t0 = float(entrie[2])
+		h = float(entrie[3])
+		steps = int(entrie[4])
 
-		stringExpression = input("Insira a expressao: ")
+		stringExpression = entrie[5]
 		expression = sympify(stringExpression)
+
+		output = open('saida.txt', 'a')
+		output.write("Metodo de Euler Inverso\n")
+		output.write("y( 0.0 ) = " + str(y0) + "\n")
+		output.write("h = " + str(h) + "\n")
 		
 		Y = y0
 		T = t0
 
-		print("0 " + str(y0))
 		for i in range(1, (steps + 1)):
 			# Yn+1 = Yn + h *F(tn+1, yn+1)
 			# Previsoes 
@@ -51,22 +57,28 @@ class methods:
 			Y += h*expression.subs([(t, Tn1), (y, Yn1)])
 			T += h
 
-			print(str(i), Y)
+			output.write(str(i) + " " + str(Y) + "\n")
+		output.write("\n")
+		output.close()
 
-	def eulerImproved(): # Pronto
-		print("Metodo: euler aprimorado")
-		y0 = float(input("Insira o valor de y0: "))
-		t0 = float(input("Insira o valor de t0: "))
-		h = float(input("Insira o valor de h: "))
-		steps = int(input("Insira o numero de passos: "))
+	def eulerImproved(entrie): # Pronto
+		y0 = float(entrie[1])
+		t0 = float(entrie[2])
+		h = float(entrie[3])
+		steps = int(entrie[4])
 
-		stringExpression = input("Insira a expressao: ")
+		stringExpression = entrie[5]
 		expression = sympify(stringExpression)
+
+		output = open('saida.txt', 'a')
+		output.write("Metodo de Euler Aprimorado\n")
+		output.write("y( 0.0 ) = " + str(y0) + "\n")
+		output.write("h = " + str(h) + "\n")
+		
 
 		Y = y0
 		T = t0
 
-		print("0 " + str(y0))
 		for i in range(1, (steps + 1)):
 			# Y = Y * h((F1+F2)/2)
 
@@ -77,45 +89,27 @@ class methods:
 			Y += h*((F1+F2)/2)
 			T += h
 
-			print(str(i), Y)
+			output.write(str(i) + " " + str(Y) + "\n")
+		output.write("\n")
+		output.close()
 
-	def rungeKutta(): # Pronto
-		print("Metodo: euler aprimorado")
-		y0 = float(input("Insira o valor de y0: "))
-		t0 = float(input("Insira o valor de t0: "))
-		h = float(input("Insira o valor de h: "))
-		steps = int(input("Insira o numero de passos: "))
+	def rungeKutta(entrie): # Pronto
+		y0 = float(entrie[1])
+		t0 = float(entrie[2])
+		h = float(entrie[3])
+		steps = int(entrie[4])
 
-		stringExpression = input("Insira a expressao: ")
+		stringExpression = entrie[5]
 		expression = sympify(stringExpression)
+
+		output = open('saida.txt', 'a')
+		output.write("Metodo de Runge-Kutta\n")
+		output.write("y( 0.0 ) = " + str(y0) + "\n")
+		output.write("h = " + str(h) + "\n")
 
 		Y = y0
 		T = t0
 
-		print("0 " + str(y0))
-		for i in range(1, (steps + 1)):
-			# Y = Y * h((F1+F2)/2)
-
-			F1 = expression.subs([(t, T), (y, Y)])
-			Yh = Y + h*F1 # Utilizando o metodo de Euler pra calcular o Yn+1
-			F2 = expression.subs([(t, T+h), (y, Yh)]) 
-
-			Y += h*((F1+F2)/2)
-			T += h
-
-			print(str(i), Y)
-		y0 = float(input("Insira o valor de y0: "))
-		t0 = float(input("Insira o valor de t0: "))
-		h = float(input("Insira o valor de h: "))
-		steps = int(input("Insira o numero de passos: "))
-
-		stringExpression = input("Insira a expressao: ")
-		expression = sympify(stringExpression)
-
-		Y = y0
-		T = t0
-
-		print("0 " + str(y0))
 		for i in range(1, (steps + 1)):
 			# Y += Y + ((K1+ 2*K2 + 2*K3 + K4)/6)*h 
 
@@ -138,39 +132,69 @@ class methods:
 			Y += K*h
 			T += h
 
-			print(str(i), Y)
+			output.write(str(i) + " " + str(Y) + "\n")
+		output.write("\n")
+		output.close()
 		
-	def adamBashforth():
+	def adamBashforth(entrie):
+		y0 = float(entrie[1])
+		t0 = float(entrie[2])
 		
+		degree = entrie.pop()
+		degree = int(degree)
+		stringExpression = entrie.pop()
+		X = entrie[3:degree+2]
+
+		expression = sympify(stringExpression)
+		steps = int(entrie.pop())
+		h = float(entrie.pop())
+
+		#output = open('saida.txt', 'a')
+		#output.write("Metodo de Adam-Bashforth\n")
+		#output.write("y( 0.0 ) = " + str(y0) + "\n")
+		#output.write("h = " + str(h) + "\n")
+
+		#Y = y0
+		#T = t0
+		#F[Y] = answer
+		#F[0][0] = 0
+
+		#for i in range(1, (steps + 1)):
+			# Yn+1 = Yn + 3/2 * h * fn - 1/2 * h * fn-1
+			#F0 = (3/2)*h*expression.subs([(t, T), (y, Y)]) 
+			#F1 = (-1)*(1/2)*h*expression.subs([(t, T), (y, Y)]) 
+			
+
+			#output.write(str(i) + " " + str(Y) + "\n")
+		#output.write("\n")
+		#output.close()
+
 	#def adamMulton():
 		
 	#def inverseFormula():
 		
-
-def menuOptions():
-	print("Escolha o metodo a ser utilizado a baixo pelo seu codigo:\n\nEuler            = euler\nEuler Inverso    = euler_inverso\nEuler Aprimorado = euler_aprimorado\n\nRunge-Kutta      = runge_kutta\n")
-	print("Adam-Bashforth   = adam_bashforth\n                 = adam_bashforth_by_euler\n                 = adam_bashforth_by_euler_inverso\n                 = adam_bashforth_by_euler_aprimorado\n                 = adam_bashforth_by_runge_kutta\n\n")
-	print("Adam-Multon      = adam_multon\n                 = adam_multon_by_euler\n                 = adam_multon_by_euler_inverso\n                 = adam_multon_by_euler_aprimorado\n                 = adam_multon_by_runge_kutta\n\n")
-	print("Formula Inversa  = formula_inversa\n                 = formula_inversa\n                 = formula_inversa_by_euler\n                 = formula_inversa_by_euler_inverso\n                 = formula_inversa_by_euler_aprimorado\n                 = formula_inversa_by_runge_kutta\n\n")
-	print("Sair do menu     = sair")
-	return input("Opcao: ")
-
-def switchCase(string):
-	if string == "euler":
-		methods.euler()
-	elif string == "euler_inverso":
-		methods.eulerInverse()
-	elif string == "euler_aprimorado":
-		methods.eulerImproved()
-	elif string == "runge_kutta":
-		methods.rungeKutta()
-	elif string == "adam_bashforth"
-		methods.adam_bashforth()
-	elif string == "sair":
-		exit()
+def switchCase(strct):
+	if strct[0] == "euler":
+		methods.euler(strct)
+	elif strct[0] == "euler_inverso":
+		methods.eulerInverse(strct)
+	elif strct[0] == "euler_aprimorado":
+		methods.eulerImproved(strct)
+	elif strct[0] == "runge_kutta":
+		methods.rungeKutta(strct)
+	elif strct[0] == "adam_bashforth":
+		methods.adamBashforth(strct)
 
 def main():
-	while menuLoop == True:
-		methodOption = menuOptions()
-		switchCase(methodOption)
+	output = open('saida.txt', 'w') # Criar o arquivo vazio inicialmente
+	output.close()
+
+	Input = open('entradas.txt', 'r')
+	data = Input.readlines()
+
+	for line in data:
+		array = line.split()
+		switchCase(array)
+
+	Input.close()
 main()
