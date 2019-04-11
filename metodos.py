@@ -1,10 +1,10 @@
 import mpmath
-from sympy.plotting import plot
+from sympy.plotting import plot as symplot
 from sympy import *	
 x, y, z, t = symbols("x y z t")
 
 class methods:
-	def euler(entrie): # Pronto
+	def euler(entrie):
 		y0 = float(entrie[1])
 		t0 = float(entrie[2])
 		h = float(entrie[3])
@@ -32,7 +32,7 @@ class methods:
 		output.write("\n")
 		output.close()
 
-	def eulerInverse(entrie): # Pronto
+	def eulerInverse(entrie): 
 		y0 = float(entrie[1])
 		t0 = float(entrie[2])
 		h = float(entrie[3])
@@ -62,7 +62,7 @@ class methods:
 		output.write("\n")
 		output.close()
 
-	def eulerImproved(entrie): # Pronto
+	def eulerImproved(entrie):
 		y0 = float(entrie[1])
 		t0 = float(entrie[2])
 		h = float(entrie[3])
@@ -94,7 +94,7 @@ class methods:
 		output.write("\n")
 		output.close()
 
-	def rungeKutta(entrie): # Pronto
+	def rungeKutta(entrie):
 		y0 = float(entrie[1])
 		t0 = float(entrie[2])
 		h = float(entrie[3])
@@ -137,7 +137,7 @@ class methods:
 		output.write("\n")
 		output.close()
 		
-	def adamBashforth(entrie): # Pronto
+	def adamBashforth(entrie): 
 		degree = int(entrie.pop())
 		Y = []
 		
@@ -224,7 +224,7 @@ class methods:
 		output.write("\n")
 		output.close()
 
-	def adamBashforthEuler(entrie): # Pronto
+	def adamBashforthEuler(entrie): 
 		Y = []
 		y0 = float(entrie[1])
 		Y.append(y0)
@@ -307,7 +307,7 @@ class methods:
 		output.write("\n")
 		output.close()
 
-	def adamBashforthEulerInverse(entrie): # Pronto
+	def adamBashforthEulerInverse(entrie): 
 		Y = []
 		y0 = float(entrie[1])
 		Y.append(y0)
@@ -401,7 +401,7 @@ class methods:
 		output.write("\n")
 		output.close()
 
-	def adamBashforthEulerImproved(entrie): # Pronto
+	def adamBashforthEulerImproved(entrie): 
 		Y = []
 		y0 = float(entrie[1])
 		Y.append(y0)
@@ -496,7 +496,7 @@ class methods:
 		output.write("\n")
 		output.close()
 
-	def adamBashforthRungeKutta(entrie): # Pronto
+	def adamBashforthRungeKutta(entrie):
 		Y = []
 		y0 = float(entrie[1])
 		Y.append(y0)
@@ -1239,7 +1239,300 @@ class methods:
 			output.write(str(i-1) + " " + entrie[i] + "\n")
 		expression = sympify(expression)
 
+		T = t0 + (degree - 1) * h		
 
+		for i in range(degree - 1, steps): 
+			if degree == 2:
+				Tn1 = T + h # Equivalente ao tn+1
+				Yn1 = Y + h*expression.subs([(t, T), (y, Y)]) # Equivalente ao yn+1
+
+				yni = (4/3)*Y[i] + (-1/3)*Y[i-1] + (2/3)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 3:
+				Tn1 = T + h 
+				Yn1 = Y + h*expression.subs([(t, T), (y, Y)])
+
+				yni = (18/11)*Y[i] + (-9/11)*Y[i-1] + (2/11)*Y[i-2] + (6/11)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 4:
+				Tn1 = T + h 
+				Yn1 = Y + h*expression.subs([(t, T), (y, Y)]) 
+
+				yni = (48/25)*Y[i] + (-36/25)*Y[i-1] + (16/25)*Y[i-2] + (-3/25)*Y[i-3] + (12/25)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 5:
+				Tn1 = T + h 
+				Yn1 = Y + h*expression.subs([(t, T), (y, Y)]) 
+
+				yni = (300/137)*Y[i] + (-300/137)*Y[i-1] + (200/137)*Y[i-2] + (-75/137)*Y[i-3] + (-75/137)*Y[i-4] + (12/137)*Y[i-5] + (60/137)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 6:
+				Tn1 = T + h 
+				Yn1 = Y + h*expression.subs([(t, T), (y, Y)])
+
+				yni = (300/147)*Y[i] + (-450/147)*Y[i-1] + (400/147)*Y[i-2] + (-225/147)*Y[i-3] + (72/147)*Y[i-4] + (-10/147)*Y[i-5] + (60/147)*h*expression.subs([(t, Tn1), (y, Yn1)])
+
+			output.write(str(i+1) + " " + str(yni) + "\n")
+			Y.append(yni)
+			T += h
+
+	def inverseFormulaEuler(entrie):
+		Y = []
+		y0 = float(entrie[1])
+		Y.append(y0)
+		t0 = float(entrie[2])
+		h = float(entrie[3])
+		steps = int(entrie[4])
+		expression = entrie[5]
+		expression = sympify(expression)
+		degree = int(entrie[6])
+
+		output = open('saida.txt', 'a')
+		output.write("Metodo da Formula Inversa por Euler de ordem " + str(degree) + "\n")
+		output.write("y( " + str(t0) + " ) = " + str(entrie[1]) + "\n")
+		output.write("h = " + str(h) + "\n")
+		output.write("0 " + str(y0) + "\n")
+		
+		yEuler = y0
+		tEuler = t0
+
+		for i in range(1, degree):
+			F = h*expression.subs([(t, tEuler), (y, yEuler)])
+
+			yEuler += F
+			tEuler += h
+			Y.append(yEuler)
+			output.write(str(i) + " " + str(yEuler) + "\n")
+
+
+		T = t0 + (degree - 1) * h		
+
+		for i in range(degree - 1, steps): 
+			if degree == 2:
+				Tn1 = T + h # Equivalente ao tn+1
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) # Equivalente ao yn+1
+
+				yni = (4/3)*Y[i] + (-1/3)*Y[i-1] + (2/3)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 3:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
+
+				yni = (18/11)*Y[i] + (-9/11)*Y[i-1] + (2/11)*Y[i-2] + (6/11)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 4:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
+
+				yni = (48/25)*Y[i] + (-36/25)*Y[i-1] + (16/25)*Y[i-2] + (-3/25)*Y[i-3] + (12/25)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 5:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
+
+				yni = (300/137)*Y[i] + (-300/137)*Y[i-1] + (200/137)*Y[i-2] + (-75/137)*Y[i-3] + (-75/137)*Y[i-4] + (12/137)*Y[i-5] + (60/137)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 6:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
+
+				yni = (300/147)*Y[i] + (-450/147)*Y[i-1] + (400/147)*Y[i-2] + (-225/147)*Y[i-3] + (72/147)*Y[i-4] + (-10/147)*Y[i-5] + (60/147)*h*expression.subs([(t, Tn1), (y, Yn1)])
+
+			output.write(str(i+1) + " " + str(yni) + "\n")
+			Y.append(yni)
+			T += h
+
+	def inverseFormulaEulerInverse(entrie):
+		Y = []
+		y0 = float(entrie[1])
+		Y.append(y0)
+		t0 = float(entrie[2])
+		h = float(entrie[3])
+		steps = int(entrie[4])
+		expression = entrie[5]
+		expression = sympify(expression)
+		degree = int(entrie[6])
+
+		output = open('saida.txt', 'a')
+		output.write("Metodo da Formula Inversa por Euler Inverso de ordem " + str(degree) + "\n")
+		output.write("y( " + str(t0) + " ) = " + str(entrie[1]) + "\n")
+		output.write("h = " + str(h) + "\n")
+		output.write("0 " + str(y0) + "\n")
+		
+		yEulerInverse = y0
+		tEulerInverse = t0
+
+		for i in range(1, degree):
+			Tn1 = tEulerInverse + h # Equivalente ao tn+1
+			Yn1 = yEulerInverse + h*expression.subs([(t, tEulerInverse), (y, yEulerInverse)]) # Equivalente ao yn+1
+
+			yEulerInverse += h*expression.subs([(t, Tn1), (y, Yn1)])
+			tEulerInverse += h
+			Y.append(yEulerInverse)
+			output.write(str(i) + " " + str(yEulerInverse) + "\n")
+
+		T = t0 + (degree - 1) * h		
+
+		for i in range(degree - 1, steps): 
+			if degree == 2:
+				Tn1 = T + h # Equivalente ao tn+1
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) # Equivalente ao yn+1
+
+				yni = (4/3)*Y[i] + (-1/3)*Y[i-1] + (2/3)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 3:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
+
+				yni = (18/11)*Y[i] + (-9/11)*Y[i-1] + (2/11)*Y[i-2] + (6/11)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 4:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
+
+				yni = (48/25)*Y[i] + (-36/25)*Y[i-1] + (16/25)*Y[i-2] + (-3/25)*Y[i-3] + (12/25)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 5:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
+
+				yni = (300/137)*Y[i] + (-300/137)*Y[i-1] + (200/137)*Y[i-2] + (-75/137)*Y[i-3] + (-75/137)*Y[i-4] + (12/137)*Y[i-5] + (60/137)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 6:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
+
+				yni = (300/147)*Y[i] + (-450/147)*Y[i-1] + (400/147)*Y[i-2] + (-225/147)*Y[i-3] + (72/147)*Y[i-4] + (-10/147)*Y[i-5] + (60/147)*h*expression.subs([(t, Tn1), (y, Yn1)])
+
+			output.write(str(i+1) + " " + str(yni) + "\n")
+			Y.append(yni)
+			T += h
+
+	def inverseFormulaEulerImproved(entrie):
+		Y = []
+		y0 = float(entrie[1])
+		Y.append(y0)
+		t0 = float(entrie[2])
+		h = float(entrie[3])
+		steps = int(entrie[4])
+		expression = entrie[5]
+		expression = sympify(expression)
+		degree = int(entrie[6])
+
+		output = open('saida.txt', 'a')
+		output.write("Metodo da Formula Inversa por Euler Aprimorado de ordem " + str(degree) + "\n")
+		output.write("y( " + str(t0) + " ) = " + str(entrie[1]) + "\n")
+		output.write("h = " + str(h) + "\n")
+		output.write("0 " + str(y0) + "\n")
+		
+		yEulerImproved = y0
+		tEulerImproved = t0
+
+		for i in range(1, degree):
+			F1_improved = expression.subs([(t, tEulerImproved), (y, yEulerImproved)])
+			Yh = yEulerImproved + h*F1_improved # Utilizando o metodo de Euler pra calcular o Yn+1
+			F2_improved = expression.subs([(t, tEulerImproved+h), (y, Yh)]) 
+
+			yEulerImproved += h*((F1_improved+F2_improved)/2)
+			tEulerImproved += h
+			Y.append(yEulerImproved)
+			output.write(str(i) + " " + str(yEulerImproved) + "\n")
+
+		T = t0 + (degree - 1) * h		
+
+		for i in range(degree - 1, steps): 
+			if degree == 2:
+				Tn1 = T + h # Equivalente ao tn+1
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) # Equivalente ao yn+1
+
+				yni = (4/3)*Y[i] + (-1/3)*Y[i-1] + (2/3)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 3:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
+
+				yni = (18/11)*Y[i] + (-9/11)*Y[i-1] + (2/11)*Y[i-2] + (6/11)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 4:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
+
+				yni = (48/25)*Y[i] + (-36/25)*Y[i-1] + (16/25)*Y[i-2] + (-3/25)*Y[i-3] + (12/25)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 5:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
+
+				yni = (300/137)*Y[i] + (-300/137)*Y[i-1] + (200/137)*Y[i-2] + (-75/137)*Y[i-3] + (-75/137)*Y[i-4] + (12/137)*Y[i-5] + (60/137)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 6:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
+
+				yni = (300/147)*Y[i] + (-450/147)*Y[i-1] + (400/147)*Y[i-2] + (-225/147)*Y[i-3] + (72/147)*Y[i-4] + (-10/147)*Y[i-5] + (60/147)*h*expression.subs([(t, Tn1), (y, Yn1)])
+
+			output.write(str(i+1) + " " + str(yni) + "\n")
+			Y.append(yni)
+			T += h
+
+	def inverseFormulaRungeKutta(entrie):
+		Y = []
+		y0 = float(entrie[1])
+		Y.append(y0)
+		t0 = float(entrie[2])
+		h = float(entrie[3])
+		steps = int(entrie[4])
+		expression = entrie[5]
+		expression = sympify(expression)
+		degree = int(entrie[6])
+
+		output = open('saida.txt', 'a')
+		output.write("Metodo da Formula Inversa por Runge-Kutta de ordem " + str(degree) + "\n")
+		output.write("y( " + str(t0) + " ) = " + str(entrie[1]) + "\n")
+		output.write("h = " + str(h) + "\n")
+		output.write("0 " + str(y0) + "\n")
+		
+		yRungeKutta = y0
+		tRungeKutta = t0
+
+		for i in range(1, degree):
+			K1 = expression.subs([(t, tRungeKutta), (y, yRungeKutta)])
+
+			T2 = tRungeKutta + (h/2)
+			Y2 = yRungeKutta+(h/2)*K1
+			K2 = expression.subs([(t, T2), (y, Y2)])
+
+			T3 = tRungeKutta + (h/2)
+			Y3 = yRungeKutta+(h/2)*K2
+			K3 = expression.subs([(t, T3), (y, Y3)])
+			
+			T4 = tRungeKutta + h
+			Y4 = yRungeKutta + h*K3
+			K4 = expression.subs([(t, T4), (y, Y4)])
+
+			K = (K1+(2*K2)+(2*K3)+K4)/6
+
+			yRungeKutta += K*h
+			tRungeKutta += h
+			Y.append(yRungeKutta)
+			output.write(str(i) + " " + str(yRungeKutta) + "\n")
+
+		T = t0 + (degree - 1) * h		
+
+		for i in range(degree - 1, steps): 
+			if degree == 2:
+				Tn1 = T + h # Equivalente ao tn+1
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) # Equivalente ao yn+1
+
+				yni = (4/3)*Y[i] + (-1/3)*Y[i-1] + (2/3)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 3:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
+
+				yni = (18/11)*Y[i] + (-9/11)*Y[i-1] + (2/11)*Y[i-2] + (6/11)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 4:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
+
+				yni = (48/25)*Y[i] + (-36/25)*Y[i-1] + (16/25)*Y[i-2] + (-3/25)*Y[i-3] + (12/25)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 5:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
+
+				yni = (300/137)*Y[i] + (-300/137)*Y[i-1] + (200/137)*Y[i-2] + (-75/137)*Y[i-3] + (-75/137)*Y[i-4] + (12/137)*Y[i-5] + (60/137)*h*expression.subs([(t, Tn1), (y, Yn1)])
+			elif degree == 6:
+				Tn1 = T + h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
+
+				yni = (300/147)*Y[i] + (-450/147)*Y[i-1] + (400/147)*Y[i-2] + (-225/147)*Y[i-3] + (72/147)*Y[i-4] + (-10/147)*Y[i-5] + (60/147)*h*expression.subs([(t, Tn1), (y, Yn1)])
+
+			output.write(str(i+1) + " " + str(yni) + "\n")
+			Y.append(yni)
+			T += h
 
 def switchCase(strct):
 	if strct[0] == "euler":
@@ -1270,6 +1563,16 @@ def switchCase(strct):
 		methods.adamMultonEulerImproved(strct)
 	elif strct[0] == "adam_multon_by_runge_kutta":
 		methods.adamMultonRungeKutta(strct)
+	elif strct[0] == "formula_inversa":
+		methods.inverseFormula(strct)
+	elif strct[0] == "formula_inversa_by_euler":
+		methods.inverseFormulaEuler(strct)
+	elif strct[0] == "formula_inversa_by_euler_inverso":
+		methods.inverseFormulaEulerInverse(strct)
+	elif strct[0] == "formula_invers_by_euler_aprimorado":
+		methods.inverseFormulaEulerImproved(strct)
+	elif strct[0] == "formula_inversa_by_runge_kutta":
+		methods.inverseFormulaRungeKutta(strct)
 
 def main():
 	output = open('saida.txt', 'w') # Criar o arquivo vazio inicialmente
