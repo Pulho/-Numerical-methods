@@ -1243,34 +1243,36 @@ class methods:
 
 		for i in range(degree - 1, steps): 
 			if degree == 2:
-				Tn1 = T + h # Equivalente ao tn+1
-				Yn1 = Y + h*expression.subs([(t, T), (y, Y)]) # Equivalente ao yn+1
+				Tn1 = T + 2*h # Equivalente ao tn+1
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) # Equivalente ao yn+1
 
 				yni = (4/3)*Y[i] + (-1/3)*Y[i-1] + (2/3)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 3:
-				Tn1 = T + h 
-				Yn1 = Y + h*expression.subs([(t, T), (y, Y)])
+				Tn1 = T + 3*h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
 
 				yni = (18/11)*Y[i] + (-9/11)*Y[i-1] + (2/11)*Y[i-2] + (6/11)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 4:
-				Tn1 = T + h 
-				Yn1 = Y + h*expression.subs([(t, T), (y, Y)]) 
+				Tn1 = T + 4*h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
 
 				yni = (48/25)*Y[i] + (-36/25)*Y[i-1] + (16/25)*Y[i-2] + (-3/25)*Y[i-3] + (12/25)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 5:
-				Tn1 = T + h 
-				Yn1 = Y + h*expression.subs([(t, T), (y, Y)]) 
+				Tn1 = T + 5*h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
 
 				yni = (300/137)*Y[i] + (-300/137)*Y[i-1] + (200/137)*Y[i-2] + (-75/137)*Y[i-3] + (-75/137)*Y[i-4] + (12/137)*Y[i-5] + (60/137)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 6:
-				Tn1 = T + h 
-				Yn1 = Y + h*expression.subs([(t, T), (y, Y)])
+				Tn1 = T + 6*h 
+				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
 
 				yni = (300/147)*Y[i] + (-450/147)*Y[i-1] + (400/147)*Y[i-2] + (-225/147)*Y[i-3] + (72/147)*Y[i-4] + (-10/147)*Y[i-5] + (60/147)*h*expression.subs([(t, Tn1), (y, Yn1)])
 
 			output.write(str(i+1) + " " + str(yni) + "\n")
 			Y.append(yni)
 			T += h
+		output.write("\n")
+		output.close()
 
 	def inverseFormulaEuler(entrie):
 		Y = []
@@ -1305,27 +1307,27 @@ class methods:
 
 		for i in range(degree - 1, steps): 
 			if degree == 2:
-				Tn1 = T + h # Equivalente ao tn+1
+				Tn1 = T + 2*h # Equivalente ao tn+1
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) # Equivalente ao yn+1
 
 				yni = (4/3)*Y[i] + (-1/3)*Y[i-1] + (2/3)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 3:
-				Tn1 = T + h 
+				Tn1 = T + 3*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
 
 				yni = (18/11)*Y[i] + (-9/11)*Y[i-1] + (2/11)*Y[i-2] + (6/11)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 4:
-				Tn1 = T + h 
+				Tn1 = T + 4*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
 
 				yni = (48/25)*Y[i] + (-36/25)*Y[i-1] + (16/25)*Y[i-2] + (-3/25)*Y[i-3] + (12/25)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 5:
-				Tn1 = T + h 
+				Tn1 = T + 5*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
 
 				yni = (300/137)*Y[i] + (-300/137)*Y[i-1] + (200/137)*Y[i-2] + (-75/137)*Y[i-3] + (-75/137)*Y[i-4] + (12/137)*Y[i-5] + (60/137)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 6:
-				Tn1 = T + h 
+				Tn1 = T + 6*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
 
 				yni = (300/147)*Y[i] + (-450/147)*Y[i-1] + (400/147)*Y[i-2] + (-225/147)*Y[i-3] + (72/147)*Y[i-4] + (-10/147)*Y[i-5] + (60/147)*h*expression.subs([(t, Tn1), (y, Yn1)])
@@ -1333,6 +1335,8 @@ class methods:
 			output.write(str(i+1) + " " + str(yni) + "\n")
 			Y.append(yni)
 			T += h
+		output.write("\n")
+		output.close()
 
 	def inverseFormulaEulerInverse(entrie):
 		Y = []
@@ -1367,27 +1371,27 @@ class methods:
 
 		for i in range(degree - 1, steps): 
 			if degree == 2:
-				Tn1 = T + h # Equivalente ao tn+1
+				Tn1 = T + 2*h # Equivalente ao tn+1
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) # Equivalente ao yn+1
 
 				yni = (4/3)*Y[i] + (-1/3)*Y[i-1] + (2/3)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 3:
-				Tn1 = T + h 
+				Tn1 = T + 3*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
 
 				yni = (18/11)*Y[i] + (-9/11)*Y[i-1] + (2/11)*Y[i-2] + (6/11)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 4:
-				Tn1 = T + h 
+				Tn1 = T + 4*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
 
 				yni = (48/25)*Y[i] + (-36/25)*Y[i-1] + (16/25)*Y[i-2] + (-3/25)*Y[i-3] + (12/25)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 5:
-				Tn1 = T + h 
+				Tn1 = T + 5*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
 
 				yni = (300/137)*Y[i] + (-300/137)*Y[i-1] + (200/137)*Y[i-2] + (-75/137)*Y[i-3] + (-75/137)*Y[i-4] + (12/137)*Y[i-5] + (60/137)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 6:
-				Tn1 = T + h 
+				Tn1 = T + 6*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
 
 				yni = (300/147)*Y[i] + (-450/147)*Y[i-1] + (400/147)*Y[i-2] + (-225/147)*Y[i-3] + (72/147)*Y[i-4] + (-10/147)*Y[i-5] + (60/147)*h*expression.subs([(t, Tn1), (y, Yn1)])
@@ -1395,6 +1399,8 @@ class methods:
 			output.write(str(i+1) + " " + str(yni) + "\n")
 			Y.append(yni)
 			T += h
+		output.write("\n")
+		output.close()
 
 	def inverseFormulaEulerImproved(entrie):
 		Y = []
@@ -1430,27 +1436,27 @@ class methods:
 
 		for i in range(degree - 1, steps): 
 			if degree == 2:
-				Tn1 = T + h # Equivalente ao tn+1
+				Tn1 = T + 2*h # Equivalente ao tn+1
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) # Equivalente ao yn+1
 
 				yni = (4/3)*Y[i] + (-1/3)*Y[i-1] + (2/3)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 3:
-				Tn1 = T + h 
+				Tn1 = T + 3*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
 
 				yni = (18/11)*Y[i] + (-9/11)*Y[i-1] + (2/11)*Y[i-2] + (6/11)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 4:
-				Tn1 = T + h 
+				Tn1 = T + 4*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
 
 				yni = (48/25)*Y[i] + (-36/25)*Y[i-1] + (16/25)*Y[i-2] + (-3/25)*Y[i-3] + (12/25)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 5:
-				Tn1 = T + h 
+				Tn1 = T + 5*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
 
 				yni = (300/137)*Y[i] + (-300/137)*Y[i-1] + (200/137)*Y[i-2] + (-75/137)*Y[i-3] + (-75/137)*Y[i-4] + (12/137)*Y[i-5] + (60/137)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 6:
-				Tn1 = T + h 
+				Tn1 = T + 6*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
 
 				yni = (300/147)*Y[i] + (-450/147)*Y[i-1] + (400/147)*Y[i-2] + (-225/147)*Y[i-3] + (72/147)*Y[i-4] + (-10/147)*Y[i-5] + (60/147)*h*expression.subs([(t, Tn1), (y, Yn1)])
@@ -1458,6 +1464,8 @@ class methods:
 			output.write(str(i+1) + " " + str(yni) + "\n")
 			Y.append(yni)
 			T += h
+		output.write("\n")
+		output.close()
 
 	def inverseFormulaRungeKutta(entrie):
 		Y = []
@@ -1505,27 +1513,27 @@ class methods:
 
 		for i in range(degree - 1, steps): 
 			if degree == 2:
-				Tn1 = T + h # Equivalente ao tn+1
+				Tn1 = T + 2*h # Equivalente ao tn+1
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) # Equivalente ao yn+1
 
 				yni = (4/3)*Y[i] + (-1/3)*Y[i-1] + (2/3)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 3:
-				Tn1 = T + h 
+				Tn1 = T + 3*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
 
 				yni = (18/11)*Y[i] + (-9/11)*Y[i-1] + (2/11)*Y[i-2] + (6/11)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 4:
-				Tn1 = T + h 
+				Tn1 = T + 4*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
 
 				yni = (48/25)*Y[i] + (-36/25)*Y[i-1] + (16/25)*Y[i-2] + (-3/25)*Y[i-3] + (12/25)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 5:
-				Tn1 = T + h 
+				Tn1 = T + 5*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])]) 
 
 				yni = (300/137)*Y[i] + (-300/137)*Y[i-1] + (200/137)*Y[i-2] + (-75/137)*Y[i-3] + (-75/137)*Y[i-4] + (12/137)*Y[i-5] + (60/137)*h*expression.subs([(t, Tn1), (y, Yn1)])
 			elif degree == 6:
-				Tn1 = T + h 
+				Tn1 = T + 6*h 
 				Yn1 = Y[i] + h*expression.subs([(t, T), (y, Y[i])])
 
 				yni = (300/147)*Y[i] + (-450/147)*Y[i-1] + (400/147)*Y[i-2] + (-225/147)*Y[i-3] + (72/147)*Y[i-4] + (-10/147)*Y[i-5] + (60/147)*h*expression.subs([(t, Tn1), (y, Yn1)])
@@ -1533,6 +1541,8 @@ class methods:
 			output.write(str(i+1) + " " + str(yni) + "\n")
 			Y.append(yni)
 			T += h
+		output.write("\n")
+		output.close()
 
 def switchCase(strct):
 	if strct[0] == "euler":
@@ -1569,7 +1579,7 @@ def switchCase(strct):
 		methods.inverseFormulaEuler(strct)
 	elif strct[0] == "formula_inversa_by_euler_inverso":
 		methods.inverseFormulaEulerInverse(strct)
-	elif strct[0] == "formula_invers_by_euler_aprimorado":
+	elif strct[0] == "formula_inversa_by_euler_aprimorado":
 		methods.inverseFormulaEulerImproved(strct)
 	elif strct[0] == "formula_inversa_by_runge_kutta":
 		methods.inverseFormulaRungeKutta(strct)
