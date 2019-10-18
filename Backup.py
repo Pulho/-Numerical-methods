@@ -235,117 +235,6 @@ def adamBashforth(y0, t0, h, step, exp, degree, method, flag):
 	outputAppend("\n")
 	return xAdam, yAdam
 
-def adamMulton(y0, t0, h, step, exp, degree, method, flag):
-	xAdam = []
-	yAdam = []
-
-	printHeader(method, y0[0], t0[0], h)
-
-	expression = sympify(exp)
-	T = t0[0]
-	
-	for i in range(degree):
-		outputAppend(str(i) + " " + str(y0[i]) + "\n")
-		xAdam.append(T)
-		yAdam.append(y0[i])
-		if flag:
-			T = t0[i]
-		else:
-			T = T + h
-	T = t0[0] + (degree - 1) * h
-
-	for i in range(degree - 1, step): 
-		if degree == 1:
-			Tn1 = T + h 
-			Yn1 = yAdam[i] + h*expression.subs([(t, T), (y, yAdam[i])]) 
-
-			F1 = (1/2)*expression.subs([(t, Tn1), (y, Yn1)])
-			F0 = (1/2)*expression.subs([(t, T), (y, yAdam[i])])
-
-			yni = yAdam[i] + h*(F1 + F0)
-			yni += (-1/12)
-		elif degree == 2:
-			Tn1 = T + h 
-			Yn1 = yAdam[i] + h*expression.subs([(t, T), (y, yAdam[i])]) 
-
-			F2 = (5/12)*expression.subs([(t, Tn1), (y, Yn1)])
-			F1 = (2/3)*expression.subs([(t, T), (y, yAdam[i])])
-			F0 = (-1/12)*expression.subs([(t, T-h), (y, yAdam[i-1])])
-
-			yni = yAdam[i] + h*(F2 + F1 + F0)
-			yni += (1/24)
-		elif degree == 3:
-			Tn1 = T + h 
-			Yn1 = yAdam[i] + h*expression.subs([(t, T), (y, yAdam[i])]) 
-
-			F3 = (3/8)*expression.subs([(t, Tn1), (y, Yn1)])
-			F2 = (19/24)*expression.subs([(t, T), (y, yAdam[i])])
-			F1 = (-5/24)*expression.subs([(t, T-h), (y, yAdam[i-1])])
-			F0 = (1/24)*expression.subs([(t, T-(2*h)), (y, yAdam[i-2])])
-
-			yni = yAdam[i] + h*(F3 + F2 + F1 + F0)
-			yni += (-19/720)
-		elif degree == 4:
-			Tn1 = T + h 
-			Yn1 = yAdam[i] + h*expression.subs([(t, T), (y, yAdam[i])]) 
-
-			F4 = (251/720)*expression.subs([(t, Tn1), (y, Yn1)])
-			F3 = (323/360)*expression.subs([(t, T), (y, yAdam[i])])
-			F2 = (-11/30)*expression.subs([(t, T-h), (y, yAdam[i-1])])
-			F1 = (53/360)*expression.subs([(t, T-(2*h)), (y, yAdam[i-2])])
-			F0 = (3/160)*expression.subs([(t, T-(3*h)), (y, yAdam[i-3])])
-
-			yni = yAdam[i] + h*(F4 + F3 + F2 + F1 + F0)
-			yni += (-19/720)
-		elif degree == 5:
-			Tn1 = T + h 
-			Yn1 = yAdam[i] + h*expression.subs([(t, T), (y, yAdam[i])]) 
-
-			F5 = (95/288)*expression.subs([(t, Tn1), (y, Yn1)])
-			F4 = (1427/1440)*expression.subs([(t, T), (y, yAdam[i])])
-			F3 = (-133/240)*expression.subs([(t, T-h), (y, yAdam[i-1])])
-			F2 = (241/720)*expression.subs([(t, T-(2*h)), (y, yAdam[i-2])])
-			F1 = (-173/1440)*expression.subs([(t, T-(3*h)), (y, yAdam[i-3])])
-			F0 = (3/160)*expression.subs([(t, T-(4*h)), (y, yAdam[i-4])])
-			
-			yni = yAdam[i] + h*(F5 + F4 + F3 + F2 + F1 + F0)
-			yni += (-863/60480)
-		elif degree == 6:
-			Tn1 = T + h 
-			Yn1 = yAdam[i-1] + h*expression.subs([(t, T), (y, yAdam[i-1])]) 
-
-			F6 = (19087/60480)*expression.subs([(t, Tn1), (y, Yn1)])
-			F5 = (2713/2520)*expression.subs([(t, T), (y, yAdam[i-1])])
-			F4 = (-15487/20160)*expression.subs([(t, T-h), (y, yAdam[i-2])])
-			F3 = (586/945)*expression.subs([(t, T-(2*h)), (y, yAdam[i-3])])
-			F2 = (-6737/20160)*expression.subs([(t, T-(3*h)), (y, yAdam[i-4])])
-			F1 = (263/2520)*expression.subs([(t, T-(4*h)), (y, yAdam[i-5])])
-			F0 = (-863/60480)*expression.subs([(t, T-(5*h)), (y, yAdam[i-6])])
-			
-			yni = yAdam[i-1] + h*(F6 + F5 + F4 + F3 + F2 + F1 + F0)
-			yni += (275/24192)
-		elif degree == 7:
-			Tn1 = T + h 
-			Yn1 = yAdam[i] + h*expression.subs([(t, T), (y, yAdam[i])]) 
-
-			F7 = (5257/17280)*expression.subs([(t, Tn1), (y, Yn1)])
-			F6 = (139849/120960)*expression.subs([(t, T), (y, yAdam[i])])
-			F5 = (-4511/4480)*expression.subs([(t, T-h), (y, yAdam[i-1])])
-			F4 = (123133/120960)*expression.subs([(t, T-(2*h)), (y, yAdam[i-2])])
-			F3 = (-88547/120960)*expression.subs([(t, T-(3*h)), (y, yAdam[i-3])])
-			F2 = (1537/4480)*expression.subs([(t, T-(4*h)), (y, yAdam[i-4])])
-			F1 = (-11351/120960)*expression.subs([(t, T-(5*h)), (y, yAdam[i-5])])
-			F0 = (275/24192)*expression.subs([(t, T-(6*h)), (y, yAdam[i-6])])
-
-			yni = yAdam[i] + h*(F7 + F6 + F5 + F4 + F3 + F2 + F1 + F0)
-			yni += (-33953/3628800)
-		outputAppend(str(i+1) + " " + str(yni) + "\n")
-		yAdam.append(yni)
-		T += h
-		xAdam.append(T)
-	outputAppend("\n")
-	return xAdam, yAdam # WORK IN PROGRESS
-
 def outputAppend(text):
 	output = open('saida.txt', 'a')
 	output.write(text)
@@ -484,38 +373,9 @@ def switchCase(strct):
 		plotGraphic(plotxAdamBashforth,plotyAdamBashforth, methodTitle, fileImageTitle)
 
 	elif strct[0] == "adam_multon":
-		y0 = []
-		t0 = []
-		degree = int(strct.pop())
-
-		for i in range(1,degree):
-			y0.append(float(strct[i]))
-
-		t0.append(float(strct[degree]))
-		h =  float(strct[degree + 1])
-		step = int(strct[degree + 2])
-		expression = strct[degree + 3]
-
-		methodTitle = "Metodo de Adam-Multon de Ordem " + str(degree)
-		fileImageTitle = "multon" + str(degree) + "th"
-
-		plotxMulton, plotyMulton = adamMulton(y0, t0, h, step, expression, degree-1, methodTitle, False)
-		plotGraphic(plotxMulton,plotyMulton, methodTitle, fileImageTitle)
-
+		adamMulton(strct)
 	elif strct[0] == "adam_multon_by_euler":
-		y0 = float(strct[1])
-		t0 = float(strct[2])
-		h =  float(strct[3])
-		step = int(strct[4])
-		expression = strct[5]
-		degree = int(strct[6])
-
-		methodTitle = "Metodo de Adam-Multon por Euler de Ordem " + str(degree)
-		fileImageTitle = "bashforthMulton" + str(degree) + "th"
-		x0Euler, y0Euler = euler(y0, t0, h, step, expression, False)
-		plotxMulton, plotyMulton = adamMulton(y0Euler, x0Euler, h, step, expression, degree, methodTitle, True)
-		plotGraphic(plotxMulton,plotyMulton, methodTitle, fileImageTitle)
-
+		adamMultonEuler(strct)
 	elif strct[0] == "adam_multon_by_euler_inverso":
 		adamMultonEulerInverse(strct)
 	elif strct[0] == "adam_multon_by_euler_aprimorado":
