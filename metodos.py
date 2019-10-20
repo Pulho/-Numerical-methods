@@ -763,20 +763,84 @@ def switchCase(strct):
 		x0RungeKutta, y0RungeKutta = rungeKutta(y0, t0, h, step, expression, False)
 		plotxInverseFormula, plotyInverseFormula = inverseFormula(y0RungeKutta, x0RungeKutta, h, step, expression, degree, methodTitle, True, True)
 		plotGraphic(plotxInverseFormula,plotyInverseFormula, methodTitle, fileImageTitle)
+	
 	elif strct[0] == "all": 
-		euler(strct)
-		eulerInverse(strct)
-		eulerImproved(strct)
-		rungeKutta(strct)
-		adamBashforth(strct)
-		adamBashforthEuler(strct)
-		adamBashforthEulerImproved(strct)
-		adamBashforthEulerInverse(strct)
-		adamBashforthRungeKutta(strct)
-		adamMultonEuler(strct)
-		adamMultonEulerInverse(strct)
-		adamMultonEulerImproved(strct)
-		adamMultonRungeKutta(strct)
+		fig, pltQ = plt.subplots()
+
+		y0 = float(strct[1])
+		t0 = float(strct[2])
+		h =  float(strct[3])
+		step = int(strct[4])
+		expression = strct[5]
+		degree = int(strct[6])
+
+		plotxEuler, plotyEuler = euler(y0, t0, h, step, expression, True)
+		lineEuler = pltQ.plot(plotxEuler, plotyEuler, 'k-o', label="Euler")
+		
+		plotxEulerInverse, plotyEulerInverse = eulerInverse(y0, t0, h, step, expression, True)
+		lineEulerInverse = pltQ.plot(plotxEulerInverse, plotyEulerInverse, 'b-o', label="Euler Inverso")
+
+		plotxEulerImproved, plotyEulerImproved = eulerImproved(y0, t0, h, step, expression, True)
+		lineEulerImproved = pltQ.plot(plotxEulerImproved, plotyEulerImproved, 'c-o', label="Euler Aprimorado")
+
+		plotxRungeKutta, plotyRungeKutta = rungeKutta(y0, t0, h, step, expression, True)
+		lineRungeKutta = pltQ.plot(plotxRungeKutta, plotyRungeKutta, 'm-o', label="Runge-Kutta")
+
+		methodTitle = "Metodo de Adam-Bashforth Euler de Ordem " + str(degree)
+		plotxBashforthEuler, plotyBashforthEuler = adamBashforth(plotyEuler, plotxEuler, h, step, expression, degree, methodTitle, True, True)
+		lineBashforthEuler = pltQ.plot(plotxBashforthEuler, plotyBashforthEuler, marker='o', color='xkcd:grey', label="Bashforth Euler")
+
+		methodTitle = "Metodo de Adam-Bashforth Euler Inverso de Ordem " + str(degree)
+		plotxBashforthEulerInverse, plotyBashforthEulerInverse = adamBashforth(plotyEulerInverse, plotxEulerInverse, h, step, expression, degree, methodTitle, True, True)
+		lineBashforthEulerInverse = pltQ.plot(plotxBashforthEulerInverse, plotyBashforthEulerInverse, marker='o', color='xkcd:beige', label="Bashforth Euler Inverso")
+
+		methodTitle = "Metodo de Adam-Bashforth Euler Aprimorado de Ordem " + str(degree)
+		plotxBashforthEulerImproved, plotyBashforthEulerImproved = adamBashforth(plotyEulerImproved, plotxEulerImproved, h, step, expression, degree, methodTitle, True, True)
+		lineBashforthEulerImproved = pltQ.plot(plotxBashforthEulerImproved, plotyBashforthEulerImproved, marker='o', color='xkcd:chartreuse', label="Bashforth Euler Aprimorado")
+
+		methodTitle = "Metodo de Adam-Bashforth Runge-Kutta de Ordem " + str(degree)
+		plotxBashforthRungeKutta, plotyBashforthRungeKutta = adamBashforth(plotyRungeKutta, plotxRungeKutta, h, step, expression, degree, methodTitle, True, True)
+		lineBashforthRungeKutta = pltQ.plot(plotxBashforthRungeKutta, plotyBashforthRungeKutta, marker='o', color='xkcd:brown', label="Bashforth Runge-Kutta")
+
+		methodTitle = "Metodo de Adam-Multon Euler de Ordem " + str(degree)
+		plotxMultonEuler, plotyMultonEuler = adamMulton(plotyEuler, plotxEuler, h, step, expression, degree, methodTitle, True, True)
+		lineMultonEuler = pltQ.plot(plotxMultonEuler, plotyMultonEuler,  marker='o', color='xkcd:coral', label="Moulton Euler")
+
+		methodTitle = "Metodo de Adam-Multon Euler Inverso de Ordem " + str(degree)
+		plotxMultonEulerInverse, plotyMultonEulerInverse = adamMulton(plotyEulerInverse, plotxEulerInverse, h, step, expression, degree, methodTitle, True, True)
+		lineMultonEulerInverse = pltQ.plot(plotxMultonEulerInverse, plotyMultonEulerInverse,  marker='o', color='xkcd:fuchsia', label="Moulton Euler Inverso")
+	
+		methodTitle = "Metodo de Adam-Multon Euler Aprimorado de Ordem " + str(degree)
+		plotxMultonEulerImproved, plotyMultonEulerImproved = adamMulton(plotyEulerImproved, plotxEulerImproved, h, step, expression, degree, methodTitle, True, True)
+		lineMultonEulerImproved = pltQ.plot(plotxMultonEulerImproved, plotyMultonEulerImproved,  marker='o', color='xkcd:gold', label="Moulton Euler Aprimorado")
+
+		methodTitle = "Metodo de Adam-Multon Runge-Kutta de Ordem " + str(degree)
+		plotxMultonRungeKutta, plotyMultonRungeKutta = adamMulton(plotyRungeKutta, plotxRungeKutta, h, step, expression, degree, methodTitle, True, True)
+		lineMultonRungeKutta = pltQ.plot(plotxMultonRungeKutta, plotyMultonRungeKutta,  marker='o', color='xkcd:green', label="Moulton Runge-Kutta")
+
+		methodTitle = "Metodo de Formula Inversa Euler de Ordem " + str(degree)
+		plotxInverseFormulaEuler, plotyInverseFormulaEuler = inverseFormula(plotyEuler, plotxEuler, h, step, expression, degree, methodTitle, True, True)
+		lineInverseFormulaEuler = pltQ.plot(plotxInverseFormulaEuler, plotyInverseFormulaEuler, marker='o', color='xkcd:lavender', label="Formula Inversa Euler")
+
+		methodTitle = "Metodo de Formula Inversa Euler Inverso de Ordem " + str(degree)
+		plotxInverseFormulaEulerInverse, plotyInverseFormulaEulerInverse = inverseFormula(plotyEulerInverse, plotxEulerInverse, h, step, expression, degree, methodTitle, True, True)
+		lineInverseFormulaEulerInverse = pltQ.plot(plotxInverseFormulaEulerInverse, plotyInverseFormulaEulerInverse, marker='o', color='xkcd:purple', label="Formula Inversa Euler Inverso")
+
+		methodTitle = "Metodo de Formula Inversa Euler Aprimorado de Ordem " + str(degree)
+		plotxInverseFormulaEulerImproved, plotyInverseFormulaEulerImproved = inverseFormula(plotyEulerImproved, plotxEulerImproved, h, step, expression, degree, methodTitle, True, True)
+		lineInverseFormulaEulerImproved = pltQ.plot(plotxInverseFormulaEulerImproved, plotyInverseFormulaEulerImproved, marker='o', color='xkcd:orange', label="Formula Inversa Euler Aprimorado")
+
+		methodTitle = "Metodo de Formula Inversa Runge-Kutta de Ordem " + str(degree)
+		plotxInverseFormulaRungeKutta, plotyInverseFormulaRungeKutta = inverseFormula(plotyRungeKutta, plotxRungeKutta, h, step, expression, degree, methodTitle, True, True)
+		lineInverseFormulaRungeKutta = pltQ.plot(plotxInverseFormulaRungeKutta, plotyInverseFormulaRungeKutta, marker='o', color='xkcd:olive', label="Formula Inversa Runge-Kutta")
+		
+		pltQ.set(xlabel='T', ylabel='Y', title='Graficos dos Metodos')
+		pltQ.grid()
+		pltQ.tick_params(labelcolor='k', labelsize='small', width=1)
+		pltQ.legend()
+		plt.show()
+		fig.savefig("GraficoMetodos.png")
+
 	return
 
 def main():
